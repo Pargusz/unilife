@@ -60,6 +60,7 @@ const Dashboard = ({ setActiveTab }) => {
                 >
                     Kontrol sende. Akademik zirveye giden yolun <span className="text-white">burada başlıyor.</span>
                 </motion.p>
+                <div className="text-[10px] text-white/5 mt-4 select-none">v1.2.0-bento-2305</div>
             </header>
 
             <motion.div
