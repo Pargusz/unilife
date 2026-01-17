@@ -1,0 +1,53 @@
+:root {
+  /* Core Palette - Midnight Space */
+  --bg-primary: #0a0a1a; /* Very dark deep blue */
+  --bg-secondary: #11112d; /* Slightly lighter for cards/sections */
+  --bg-tertiary: #1a1a3d; /* Hover states */
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+  --text-muted: #6b6b80;
+
+  /* Neon Accents */
+  --accent-cyan: #00f3ff;
+  --accent-purple: #bc00ff;
+  --accent-pink: #ff00aa;
+  --accent-green: #00ff9d;
+
+  /* Gradients */
+  --gradient-main: linear-gradient(135deg, var(--bg-primary) 0%, #1a0b2e 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  --gradient-glow: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-blur: blur(12px);
+
+  /* Spacing & Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-purple);
+}
