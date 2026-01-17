@@ -1,46 +1,38 @@
-# UniLife - Premium Student Utility
+# UniLife - Premium Öğrenci Asistanı
 
-A high-performance, visually stunning dashboard for students featuring grade calculation, focus timers, and task management.
+Üniversite öğrencileri için geliştirilmiş, not ortalaması hesaplama, odaklanma sayacı ve görev takibi içeren premium bir web uygulaması.
 
-## Features
-- **GPA Genius**: Calculate your GPA with interactive inputs and visual feedback.
-- **Focus Flow**: Ambient Pomodoro timer for deep work sessions.
-- **Task Master**: Organized to-do list for assignments.
-- **Premium UI**: Midnight Blue theme with glassmorphism and neon accents.
+## Özellikler
+- **Ortalama Hesaplayıcı**: Etkileşimli girişler ve görsel geri bildirim ile AGNO/ANO hesaplayın.
+- **Odak Modu**: Derin çalışma seansları için ambiyanslı Pomodoro sayacı.
+- **Görev Yöneticisi**: Ödevler ve projeler için düzenli yapılacaklar listesi.
+- **Premium Tasarım**: Glassmorphism ve neon vurgularla "Gece Mavisi" teması.
 
-## Development
+## Geliştirme
 
-1. Install dependencies:
+1. Bağımlılıkları yükleyin:
    ```bash
    npm install
    ```
 
-2. Start local server:
+2. Yerel sunucuyu başlatın:
    ```bash
    npm run dev
    ```
 
-## Deployment for GitHub Pages
+## GitHub Pages Dağıtımı
 
-This project is built with Vite. To deploy to GitHub Pages:
+Bu proje Vite ile oluşturulmuştur. GitHub Pages'de yayınlamak için:
 
-1. Update `vite.config.js` (optional):
-   If you are deploying to `https://<USERNAME>.github.io/<REPO>/`, add the base path in `vite.config.js`:
-   ```js
-   export default defineConfig({
-     base: '/<REPO>/', 
-     plugins: [react()],
-   })
+1. GitHub'da `unilife` adında yeni bir depo (repository) oluşturun.
+2. Bu projeyi o depoya gönderin:
+   ```bash
+   git remote add origin https://github.com/KULLANICI_ADI/unilife.git
+   git branch -M main
+   git push -u origin main
    ```
-
-2. Build the project:
+3. Projeyi derleyin:
    ```bash
    npm run build
    ```
-
-3. Upload the `dist` folder content to your repository's `gh-pages` branch or configure GitHub Pages Settings to serve from the `dist` folder (if supported, or use a deployment action).
-
-### Easy Deployment via gh-pages package
-1. `npm install gh-pages --save-dev`
-2. Add to `package.json` scripts: `"deploy": "gh-pages -d dist"`
-3. Run `npm run build && npm run deploy`
+4. `dist` klasörünün içeriğini `gh-pages` dalına (branch) gönderin veya Repo Ayarları > Pages kısmından kaynağı ayarlayın.

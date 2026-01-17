@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Trash2, GraduationCap } from 'lucide-react';
+import { Plus, Trash2, GraduationCap, Calculator, TrendingDown, TrendingUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const GRADE_POINTS = {
@@ -32,7 +32,7 @@ const GPACalculator = () => {
     }, [courses]);
 
     const addCourse = () => {
-        setCourses([...courses, { id: Date.now(), name: 'Yeni Ders', credit: 3, grade: 'CC' }]);
+        setCourses([{ id: Date.now(), name: 'Yeni Ders', credit: 3, grade: 'CC' }, ...courses]);
     };
 
     const removeCourse = (id) => {
@@ -44,99 +44,122 @@ const GPACalculator = () => {
     };
 
     return (
-        <div className="max-w-4xl mx-auto space-y-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-12">
+            <header className="flex flex-col md:flex-row md:items-center justify-between gap-10 mb-16">
                 <div>
-                    <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 mb-2">Not Ortalaması</h2>
-                    <p className="text-gray-400">Dönemlik veya genel not ortalamanı hesapla.</p>
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary mb-6"
+                    >
+                        <GraduationCap size={14} />
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Akademik Zirve</span>
+                    </motion.div>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-7xl font-black text-white tracking-tighter"
+                    >
+                        GPA <span className="text-glow-premium">Genius</span>.
+                    </motion.h1>
                 </div>
 
                 <motion.div
-                    className="glass-panel p-6 rounded-2xl flex items-center gap-6 min-w-[200px]"
-                    whileHover={{ scale: 1.02 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ type: "spring", stiffness: 100, delay: 0.3 }}
+                    className="w-56 h-56 rounded-[3rem] bento-glass flex flex-col items-center justify-center border-primary/30 relative overflow-hidden group shadow-[0_32px_64px_-12px_rgba(99,102,241,0.3)]"
                 >
-                    <div className="h-16 w-16 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-600 flex items-center justify-center text-2xl font-bold text-white shadow-lg shadow-cyan-500/30">
-                        {gpa}
-                    </div>
-                    <div>
-                        <div className="text-sm text-gray-400 uppercase tracking-wider font-semibold">Mevcut AGNO</div>
-                        <div className="text-xs text-blue-300">Harika gidiyorsun!</div>
-                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent pointer-events-none" />
+                    <div className="text-7xl font-black text-white group-hover:scale-110 transition-transform duration-500">{gpa}</div>
+                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2">MEVCUT PUAN</div>
+                    <TrendingUp className="text-primary mt-4" size={24} />
                 </motion.div>
-            </div>
+            </header>
 
-            <div className="glass-panel p-6 rounded-2xl">
-                <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-semibold text-white flex items-center gap-2">
-                        <GraduationCap className="text-purple-400" /> Ders Listesi
-                    </h3>
+            <div className="bento-card border-white/5 bg-slate-900/20">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
+                    <div>
+                        <h3 className="text-2xl font-black text-white flex items-center gap-3">
+                            <Calculator className="text-primary" size={28} />
+                            Ders Listesi
+                        </h3>
+                        <p className="text-slate-500 font-bold text-xs uppercase tracking-widest mt-1">Girişlerini Buradan Yönet</p>
+                    </div>
                     <button
                         onClick={addCourse}
-                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-lg hover:from-cyan-500 hover:to-blue-500 transition-all font-medium text-sm shadow-lg shadow-blue-500/20"
+                        className="btn-bento flex items-center gap-3 group"
                     >
-                        <Plus size={16} /> Ders Ekle
+                        <Plus size={20} className="group-hover:rotate-90 transition-transform duration-300" />
+                        <span>Yeni Ders Ekle</span>
                     </button>
                 </div>
 
-                <div className="grid grid-cols-12 gap-4 mb-4 px-4 text-sm font-semibold text-gray-400 uppercase tracking-wider">
-                    <div className="col-span-12 md:col-span-5">Ders Adı</div>
-                    <div className="col-span-4 md:col-span-3">Kredi</div>
-                    <div className="col-span-4 md:col-span-3">Harf Notu</div>
-                    <div className="col-span-4 md:col-span-1 text-center">Sil</div>
-                </div>
-
-                <AnimatePresence>
-                    <div className="space-y-3">
+                <div className="space-y-4">
+                    <AnimatePresence mode="popLayout">
                         {courses.map((course) => (
                             <motion.div
                                 key={course.id}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, x: -10 }}
-                                className="grid grid-cols-12 gap-4 items-center bg-white/5 p-4 rounded-xl border border-white/5 hover:border-white/10 transition-colors"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95, x: 20 }}
                                 layout
+                                className="flex flex-col md:flex-row md:items-center gap-6 p-6 rounded-[2rem] bg-white/5 border border-white/5 hover:border-primary/30 hover:bg-white/10 transition-all duration-500 group"
                             >
-                                <div className="col-span-12 md:col-span-5">
+                                <div className="flex-1">
                                     <input
                                         type="text"
                                         value={course.name}
                                         onChange={(e) => updateCourse(course.id, 'name', e.target.value)}
-                                        className="w-full bg-transparent border-b border-transparent focus:border-cyan-500 outline-none text-white placeholder-gray-600 transition-colors py-1"
-                                        placeholder="Ders Adı"
+                                        className="w-full bg-transparent border-none focus:ring-0 outline-none text-xl font-bold text-white placeholder-white/20"
+                                        placeholder="Dersin Adı..."
                                     />
                                 </div>
-                                <div className="col-span-4 md:col-span-3">
-                                    <input
-                                        type="number"
-                                        value={course.credit}
-                                        onChange={(e) => updateCourse(course.id, 'credit', e.target.value)}
-                                        className="w-full bg-transparent border-none outline-none text-white text-center bg-white/5 rounded-lg py-2 focus:ring-2 ring-purple-500/50"
-                                        min="0"
-                                    />
-                                </div>
-                                <div className="col-span-4 md:col-span-3">
-                                    <select
-                                        value={course.grade}
-                                        onChange={(e) => updateCourse(course.id, 'grade', e.target.value)}
-                                        className="w-full bg-[#0a0a1a] border border-white/10 text-white rounded-lg py-2 px-2 outline-none focus:border-purple-500"
-                                    >
-                                        {Object.keys(GRADE_POINTS).map(g => (
-                                            <option key={g} value={g}>{g} ({GRADE_POINTS[g]})</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="col-span-4 md:col-span-1 flex justify-center">
+
+                                <div className="flex items-center gap-8">
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-tighter mb-1.5">Krediler</span>
+                                        <input
+                                            type="number"
+                                            value={course.credit}
+                                            onChange={(e) => updateCourse(course.id, 'credit', e.target.value)}
+                                            className="w-20 bg-midnight rounded-2xl py-3 px-4 text-white text-center font-black focus:ring-2 focus:ring-primary transition-all outline-none border border-white/5"
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-tighter mb-1.5">Harf Notu</span>
+                                        <select
+                                            value={course.grade}
+                                            onChange={(e) => updateCourse(course.id, 'grade', e.target.value)}
+                                            className="w-24 bg-midnight border border-white/5 text-white rounded-2xl py-3 px-4 font-black outline-none focus:ring-2 focus:ring-primary transition-all appearance-none cursor-pointer text-center"
+                                        >
+                                            {Object.keys(GRADE_POINTS).map(g => (
+                                                <option key={g} value={g} className="bg-midnight">{g}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+
                                     <button
                                         onClick={() => removeCourse(course.id)}
-                                        className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-full transition-colors"
+                                        className="p-4 text-slate-600 hover:text-secondary hover:bg-secondary/10 rounded-2xl transition-all"
                                     >
-                                        <Trash2 size={18} />
+                                        <Trash2 size={24} />
                                     </button>
                                 </div>
                             </motion.div>
                         ))}
+                    </AnimatePresence>
+                </div>
+
+                {courses.length === 0 && (
+                    <div className="py-32 text-center rounded-[2.5rem] border border-dashed border-white/10 bg-white/2">
+                        <GraduationCap className="mx-auto text-slate-700 mb-6" size={64} />
+                        <p className="text-xl font-bold text-slate-400">Hiç ders eklenmemiş.</p>
+                        <p className="text-sm text-slate-600 mt-2 font-medium">Yeni bir ders ekleyerek akademik takibine başla.</p>
                     </div>
-                </AnimatePresence>
+                )}
             </div>
         </div>
     );

@@ -1,54 +1,70 @@
-@import './styles/variables.css';
+@import "tailwindcss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@theme {
+  --font-sans: "Bricolage Grotesque", sans-serif;
+  --color-midnight: #020617;
+  --color-primary: #6366f1;
+  --color-secondary: #f43f5e;
+  --color-accent: #10b981;
 }
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-primary);
-  background: var(--gradient-main);
+@utility mesh-bg {
+  background:
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(244, 63, 94, 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
   background-attachment: fixed;
-  color: var(--text-primary);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@utility bento-glass {
+  background-color: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.3),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
+@utility bento-card {
+  @apply bento-glass rounded-[2rem] p-8 transition-all duration-500 overflow-hidden relative;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(15, 23, 42, 0.6);
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
 }
 
-/* Utilities */
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow);
-  border-radius: var(--radius-md);
+@utility text-glow-premium {
+  text-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
 }
 
-.text-gradient {
-  background: var(--gradient-glow);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@utility btn-bento {
+  @apply px-8 py-4 rounded-2xl bg-white text-midnight font-bold shadow-xl hover:bg-primary hover:text-white transition-all duration-300 active:scale-95;
 }
 
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+@layer base {
+  body {
+    @apply bg-midnight text-slate-100 font-sans antialiased mesh-bg;
+  }
+}
+
+.layout-content {
+  @apply max-w-[1400px] mx-auto px-8 py-12;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
 }

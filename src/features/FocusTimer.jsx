@@ -1,11 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, RefreshCw, Coffee, Brain, Moon } from 'lucide-react';
+import { Play, Pause, RefreshCw, Coffee, Brain, Moon, Sparkles, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MODES = {
-    TYPE_FOCUS: { time: 25 * 60, label: 'Derin Odak', color: 'from-cyan-500 to-blue-500' },
-    TYPE_SHORT: { time: 5 * 60, label: 'Kısa Mola', color: 'from-green-400 to-emerald-500' },
-    TYPE_LONG: { time: 15 * 60, label: 'Uzun Mola', color: 'from-purple-500 to-pink-500' }
+    TYPE_FOCUS: {
+        time: 25 * 60,
+        label: 'DERİN ODAK',
+        color: 'bg-primary',
+        glow: 'shadow-primary/40',
+        light: 'bg-primary/20',
+        icon: Brain
+    },
+    TYPE_SHORT: {
+        time: 5 * 60,
+        label: 'KISA MOLA',
+        color: 'bg-accent',
+        glow: 'shadow-accent/40',
+        light: 'bg-accent/20',
+        icon: Coffee
+    },
+    TYPE_LONG: {
+        time: 15 * 60,
+        label: 'UZUN MOLA',
+        color: 'bg-secondary',
+        glow: 'shadow-secondary/40',
+        light: 'bg-secondary/20',
+        icon: Moon
+    }
 };
 
 const FocusTimer = () => {
@@ -21,7 +42,6 @@ const FocusTimer = () => {
         } else if (timeLeft === 0) {
             setIsActive(false);
             if (mode === 'TYPE_FOCUS') setCycle(c => c + 1);
-            // Play sound here ideally
         }
         return () => clearInterval(interval);
     }, [isActive, timeLeft, mode]);
@@ -45,101 +65,119 @@ const FocusTimer = () => {
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
-    const currentColor = MODES[mode].color;
+    const current = MODES[mode];
+    const Icon = current.icon;
 
     return (
-        <div className="max-w-4xl mx-auto flex flex-col items-center">
-            <div className="text-center mb-10">
-                <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 mb-2">Odak Modu</h2>
-                <p className="text-gray-400">Nefesine odaklan. Zihnini serbest bırak.</p>
-            </div>
+        <div className="flex flex-col items-center">
+            <header className="text-center mb-20">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 border border-secondary/20 text-secondary mb-6"
+                >
+                    <Sparkles size={14} />
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">Zihin Akışı</span>
+                </motion.div>
+                <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="text-7xl font-black text-white tracking-tighter"
+                >
+                    Focus <span className="text-secondary text-glow-premium italic">Flow</span>.
+                </motion.h1>
+            </header>
 
             {/* Mode Selectors */}
-            <div className="flex gap-4 mb-12 bg-white/5 p-2 rounded-2xl backdrop-blur-sm">
-                <button
-                    onClick={() => switchMode('TYPE_FOCUS')}
-                    className={`px-6 py-2 rounded-xl flex items-center gap-2 transition-all ${mode === 'TYPE_FOCUS' ? 'bg-white/10 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                >
-                    <Brain size={18} /> Odak
-                </button>
-                <button
-                    onClick={() => switchMode('TYPE_SHORT')}
-                    className={`px-6 py-2 rounded-xl flex items-center gap-2 transition-all ${mode === 'TYPE_SHORT' ? 'bg-white/10 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                >
-                    <Coffee size={18} /> Kısa Mola
-                </button>
-                <button
-                    onClick={() => switchMode('TYPE_LONG')}
-                    className={`px-6 py-2 rounded-xl flex items-center gap-2 transition-all ${mode === 'TYPE_LONG' ? 'bg-white/10 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                >
-                    <Moon size={18} /> Uzun Mola
-                </button>
+            <div className="flex gap-2 p-2 bento-glass rounded-[2rem] border-white/5 mb-20 shadow-2xl">
+                {Object.entries(MODES).map(([key, config]) => {
+                    const ModeIcon = config.icon;
+                    const isSelected = mode === key;
+                    return (
+                        <button
+                            key={key}
+                            onClick={() => switchMode(key)}
+                            className={`px-8 py-4 rounded-[1.5rem] font-black text-sm flex items-center gap-3 transition-all duration-500 ${isSelected
+                                    ? `${config.color} text-white shadow-2xl ${config.glow} scale-[1.05]`
+                                    : 'text-slate-500 hover:text-white hover:bg-white/5'
+                                }`}
+                        >
+                            <ModeIcon size={20} />
+                            <span className="hidden sm:inline">{config.label}</span>
+                        </button>
+                    );
+                })}
             </div>
 
-            {/* Timer Circle */}
-            <div className="relative w-80 h-80 flex items-center justify-center mb-12">
-                {/* Animated Background Rings */}
-                <AnimatePresence>
-                    {isActive && (
-                        <>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 w-full max-w-5xl">
+                {/* Main Timer Bento */}
+                <div className="lg:col-span-1 bento-card border-secondary/20 flex flex-col items-center justify-center min-h-[500px] bg-gradient-to-br from-secondary/10 to-transparent">
+                    <AnimatePresence>
+                        {isActive && (
                             <motion.div
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: 1.5, opacity: 0.2 }}
-                                exit={{ scale: 0.8, opacity: 0 }}
-                                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-                                className={`absolute inset-0 rounded-full bg-gradient-to-tr ${currentColor} blur-xl`}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1.1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                                className={`absolute w-72 h-72 rounded-full ${current.color} opacity-20 blur-[100px] pointer-events-none`}
                             />
-                            <motion.div
-                                initial={{ scale: 0.9, opacity: 0 }}
-                                animate={{ scale: 1.2, opacity: 0.4 }}
-                                exit={{ scale: 0.9, opacity: 0 }}
-                                transition={{ repeat: Infinity, duration: 4, delay: 1, ease: "easeInOut" }}
-                                className={`absolute inset-0 rounded-full bg-gradient-to-bl ${currentColor} blur-2xl`}
-                            />
-                        </>
-                    )}
-                </AnimatePresence>
+                        )}
+                    </AnimatePresence>
 
-                {/* Glass Container */}
-                <div className="relative z-10 w-full h-full glass-panel rounded-full flex flex-col items-center justify-center border-4 border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
                     <motion.div
                         key={timeLeft}
-                        initial={{ scale: 0.95, opacity: 0.8 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className={`text-6xl font-black bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-400`}
+                        className="text-[10rem] font-black text-white tracking-tighter leading-none z-10"
                         style={{ fontVariantNumeric: 'tabular-nums' }}
                     >
-                        {formatTime(timeLeft)}
+                        {formatTime(timeLeft).split(':')[0]}
+                        <p className="text-3xl text-secondary font-black text-center mt-[-20px] tracking-[0.5em]">DAKİKA</p>
                     </motion.div>
-                    <div className="text-gray-400 mt-2 font-medium tracking-widest uppercase text-xs">
-                        {isActive ? 'AKIŞTA' : 'DURAKLATILDI'}
+
+                    <div className="text-9xl font-black text-white/5 absolute bottom-4 right-8 select-none pointer-events-none tracking-tighter">
+                        {formatTime(timeLeft).split(':')[1]}
                     </div>
                 </div>
-            </div>
 
-            {/* Controls */}
-            <div className="flex gap-6">
-                <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={toggleTimer}
-                    className={`h-16 w-16 rounded-full flex items-center justify-center bg-gradient-to-tr ${currentColor} text-white shadow-lg shadow-cyan-500/20`}
-                >
-                    {isActive ? <Pause size={32} fill="currentColor" /> : <Play size={32} fill="currentColor" className="ml-1" />}
-                </motion.button>
+                {/* Controls & Stats Bento */}
+                <div className="lg:col-span-1 flex flex-col gap-6">
+                    <div className="bento-card border-white/5 flex-1 flex flex-col items-center justify-center px-10">
+                        <div className="flex gap-8 items-center">
+                            <motion.button
+                                whileHover={{ scale: 1.1, rotate: -15 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={resetTimer}
+                                className="w-16 h-16 rounded-3xl bento-glass flex items-center justify-center text-slate-500 hover:text-white transition-colors"
+                            >
+                                <RefreshCw size={28} />
+                            </motion.button>
 
-                <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={resetTimer}
-                    className="h-16 w-16 rounded-full flex items-center justify-center bg-white/10 text-white hover:bg-white/20 transition-colors"
-                >
-                    <RefreshCw size={28} />
-                </motion.button>
-            </div>
+                            <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={toggleTimer}
+                                className={`w-32 h-32 rounded-[3rem] ${current.color} text-white flex items-center justify-center shadow-2xl ${current.glow} border-8 border-white/10`}
+                            >
+                                {isActive ? <Pause size={48} fill="white" /> : <Play size={48} fill="white" className="ml-2" />}
+                            </motion.button>
 
-            <div className="mt-8 text-gray-500 text-sm">
-                Bugünkü Toplam Döngü: <span className="text-white font-bold">{cycle}</span>
+                            <div className="w-16 h-16 rounded-3xl bento-glass flex flex-col items-center justify-center text-secondary border-secondary/20">
+                                <p className="text-xs font-black uppercase opacity-60 italic tracking-tighter">Round</p>
+                                <span className="text-2xl font-black">{cycle}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bento-card bg-primary text-white border-none flex items-center gap-6 group hover:translate-y-0 hover:scale-[1.02] cursor-pointer">
+                        <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center group-hover:rotate-12 transition-transform duration-500">
+                            <Zap size={28} />
+                        </div>
+                        <div>
+                            <p className="text-sm font-black uppercase tracking-[0.2em] opacity-80 italic">Enerji Modu</p>
+                            <h4 className="text-xl font-bold tracking-tight">Müzik & Ambiyansı Aç</h4>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

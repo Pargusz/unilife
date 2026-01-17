@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import Sidebar from './components/Layout/Sidebar';
 import Dashboard from './pages/Dashboard';
 import GPACalculator from './features/GPACalculator';
@@ -19,18 +20,22 @@ const App = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-transparent text-white overflow-hidden font-sans selection:bg-purple-500/30">
+    <div className="min-h-screen selection:bg-primary/30 font-sans">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="flex-1 ml-20 md:ml-64 p-8 overflow-y-auto h-screen relative scroll-smooth">
-        {/* Background glow effects */}
-        <div className="fixed top-[-20%] right-[-10%] w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="fixed bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-blue-900/20 rounded-full blur-[100px] pointer-events-none" />
-        <div className="fixed top-[40%] left-[-10%] w-[400px] h-[400px] bg-cyan-900/10 rounded-full blur-[100px] pointer-events-none" />
-
-        <div className="relative z-10 max-w-7xl mx-auto py-8">
-          {renderContent()}
-        </div>
+      <main className="ml-32 md:ml-[24rem] transition-all duration-500 min-h-screen">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, scale: 0.98, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.98, filter: 'blur(10px)' }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="layout-content"
+          >
+            {renderContent()}
+          </motion.div>
+        </AnimatePresence>
       </main>
     </div>
   );
