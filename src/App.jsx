@@ -20,10 +20,11 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen selection:bg-primary/30 font-sans">
+    <div className="min-h-screen selection:bg-primary/30 font-sans mesh-bg">
       <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <main className="ml-32 md:ml-[24rem] transition-all duration-500 min-h-screen">
+      {/* Responsive Margins: Padding-bottom on mobile to account for bottom nav */}
+      <main className="md:ml-[24rem] transition-all duration-500 min-h-screen pb-32 md:pb-12">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}

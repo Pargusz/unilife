@@ -18,18 +18,54 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   ];
 
   return (
-    <div className="fixed top-8 left-8 bottom-8 w-24 md:w-80 bento-glass rounded-[2.5rem] z-50 flex flex-col p-6 border-white/10 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.6)]">
-      <div className="flex items-center gap-4 mb-14 px-2">
-        <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center shadow-2xl shadow-primary/40 rotate-3">
-          <Sparkles className="text-white w-7 h-7" />
+    <>
+      {/* Desktop Sidebar */}
+      <div className="fixed top-8 left-8 bottom-8 w-24 md:w-80 bento-glass rounded-[2.5rem] z-50 hidden md:flex flex-col p-6 border-white/10 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.6)]">
+        <div className="flex items-center gap-4 mb-14 px-2">
+          <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center shadow-2xl shadow-primary/40 rotate-3">
+            <Sparkles className="text-white w-7 h-7" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-black text-white tracking-tighter">UniLife</h1>
+            <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Premium</p>
+          </div>
         </div>
-        <div className="hidden md:block">
-          <h1 className="text-2xl font-black text-white tracking-tighter">UniLife</h1>
-          <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">Premium</p>
+
+        <nav className="flex-1 space-y-4">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = activeTab === item.id;
+
+            return (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className="w-full relative group outline-none"
+              >
+                <div className={`flex items-center gap-4 px-5 py-5 rounded-[1.5rem] transition-all duration-500 ${isActive
+                    ? 'bg-white text-midnight shadow-2xl scale-[1.02]'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  }`}>
+                  <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                  <span className="font-bold text-lg tracking-tight">{item.label}</span>
+                  {isActive && <ChevronRight size={18} className="ml-auto" />}
+                </div>
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="mt-auto">
+          <div className="p-6 rounded-[2rem] bg-gradient-to-br from-primary/20 to-secondary/10 border border-white/5 relative overflow-hidden group cursor-pointer">
+            <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <p className="text-sm font-black text-white mb-1">Destek Al</p>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">Topluluğa Katıl & Yardımlaş</p>
+          </div>
         </div>
       </div>
 
-      <nav className="flex-1 space-y-4">
+      {/* Mobile Bottom Navigation */}
+      <div className="fixed bottom-6 left-6 right-6 h-20 bento-glass rounded-[2rem] z-50 flex md:hidden items-center justify-around px-4 border-white/10 shadow-2xl">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -38,29 +74,23 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className="w-full relative group outline-none"
+              className="relative flex flex-col items-center justify-center w-14 h-14 rounded-2xl transition-all duration-300 outline-none"
             >
-              <div className={`flex items-center gap-4 px-5 py-5 rounded-[1.5rem] transition-all duration-500 ${isActive
-                  ? 'bg-white text-midnight shadow-2xl scale-[1.02]'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}>
+              <div className={`transition-all duration-300 ${isActive ? 'text-primary scale-110' : 'text-slate-500'}`}>
                 <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
-                <span className="hidden md:block font-bold text-lg tracking-tight">{item.label}</span>
-                {isActive && <ChevronRight size={18} className="ml-auto hidden md:block" />}
               </div>
+              {isActive && (
+                <motion.div
+                  layoutId="mobile-indicator"
+                  className="absolute -bottom-1 w-1 h-1 rounded-full bg-primary"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
             </button>
           );
         })}
-      </nav>
-
-      <div className="mt-auto hidden md:block">
-        <div className="p-6 rounded-[2rem] bg-gradient-to-br from-primary/20 to-secondary/10 border border-white/5 relative overflow-hidden group cursor-pointer">
-          <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <p className="text-sm font-black text-white mb-1">Destek Al</p>
-          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed">Topluluğa Katıl & Yardımlaş</p>
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
